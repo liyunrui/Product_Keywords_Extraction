@@ -1,0 +1,7 @@
+numpy==1.13.3
+pandas==0.21.0
+xgboost==0.6
+scikit-learn==0.19.1
+scipy==1.0.0
+jieba==0.39
+gensim==3.4.0
