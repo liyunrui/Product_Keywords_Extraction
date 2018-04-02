@@ -110,13 +110,15 @@ Experiments
 
 
 
-Summary
+Conclusion and Future work
 ===
 1. I designed an algorithm integrating Jieba, Gensim, and Xgboost to implement a keyword recommendation system.
 
 2. Rather than returning keywords probabilities, I applied f1 score maximization to convert them into binary numbers (Yes: It's keyword/No, it's not keyword).
 
-3. It still has some room for further improvement. Like we can see in experiments, the more effor we put into text preprocessing, the better result we got. Also, if time permits, I could try keywords expansion and find a better way to convert probabilities into list of best keywords.
+3. The RMSE achieved on the validating dataset is 0.065, demonstrating that predicting ratio that users used a word to look for products with a significant level of accuracy is achievable using the system I designed.
+
+4. It still has some room for further improvement. Like we can see in experiments, the more effor we put into text preprocessing, the better result we got. Also, if time permits, I could try keywords expansion and find a better way to convert probabilities into list of best keywords.
 
 
 
