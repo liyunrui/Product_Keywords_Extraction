@@ -68,9 +68,9 @@ Feature Engineering
 I created four types of features.
 
 1. **Category features** - What is the product’s category?
-2. **Product Name x word features** - What’s the relationship between a specific product name and words extracted?
-3. **Hot Search features** - How well the extracted words is searched by users?
-4. **Semantic features** - What is the semantics of the extracted words?
+2. **Product Name x word features** - What’s the relationship between a specific product name and extracted words?
+3. **Hot Search features** - How well the extracted words are searched by users?
+4. **Semantic features** - What are the semantics of the extracted words?
 
 
 The details about how they were generated, please see directory [py_feature](https://github.com/liyunrui/Product_Keywords_Extraction/tree/master/py_feature).
@@ -97,7 +97,7 @@ I built 250-dimensional semantic space using  [gensim](https://radimrehurek.com/
 - dim2: 2-dimensional semantic vector of the extracted word.
 
 Note: 
-Here I need some preprocessing to wiki corpus for conversion between Traditional Chinese and Simplified Chinese, please refer to [OpenCC](https://github.com/BYVoid/OpenCC). However, to save time, I put pre-traiend model, called word2vec.model, in the directory [word2vec](https://github.com/liyunrui/Product_Keywords_Extraction/tree/master/word2vec).
+Here I need some preprocessing to wiki corpus for conversion between Traditional Chinese and Simplified Chinese with [OpenCC](https://github.com/BYVoid/OpenCC) and training word vector. However, to save time, I put pre-traiend model, called word2vec.model, in the directory [word2vec](https://github.com/liyunrui/Product_Keywords_Extraction/tree/master/word2vec).
 
 
 Experiments
