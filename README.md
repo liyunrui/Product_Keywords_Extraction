@@ -1,14 +1,14 @@
 Product Keywords Extraction
 ===
-My solution for the Shopee Technical assesment. In order to help seller find the most effective keywords, I designed a keyword recommendation system mainly using NLP and ML techniques.
+My solution for the Shopee Technical assessment. In order to help seller find the most effective keywords, I designed a keyword recommendation system mainly using NLP and ML techniques.
 
 Task Overview
 ===
-The task is how to extract best keywords: Given a seller’s product name and category of the product, to recommend a list best keywords for this product.
+The task is how to extract best keywords: Given a seller’s product name and category of the product, to recommend a list of best keywords for this product.
 
-The task is quite different from common keywords extraction task such as search engine. For example, given a bunch of keywords queried by users, to find relevant document with those words.
+The task is quite different from general keywords extraction task such as search engine. For example, given a bunch of keywords queried by users, to find relevant documents with those words.
 
-The goal of the task also makes it interesting and challenging: What is definition of the best keywords? Let's saying if we knew, then How do we automatically judge whether the extracted keywords are the best keywords?
+The goal of the task also makes it interesting and challenging: What is the definition of best keywords? Let's saying if we knew, then How do we automatically judge whether the extracted keywords are the best keywords?
 
 Data 
 ===
@@ -46,14 +46,14 @@ Here is a diagram of my keywords recommendation system flow.
 
 The keywords probabilities are a weighted average of the outputs from the xgboost models. Then, the final list of best keywords are chosen by using these probabilities and choosing the keywords subset with maximum expected F1-score.
 
-In the below, we’re going to break our approach into  a couple of chunks to elaborate.
+In the below, I'm going to break down my approach into a couple of chunks to elaborate.
 ### Text Preprocessing
 In order to reduce the words without too much information, there are basically two steps to filter raw data: 
 - Normalizing: Make different word with same meaning become a single word. For example, I turn "iphone 7" into "iphone7". 
 - Remove stopwords: Since product name is much shorter than document, I don't use common stopwords. Here, I self-defined the stopwords are the words never were searched by users.
 
 ### Keywords Extraction ([Jieba](https://github.com/isuhao/jieba))
-Since there are lot of new words in our task, this makes segmentation or tokenization harder. But Jieba has the ability to add your own new words. For example, I self-defined "手機殼","維多利亞的秘密", "細肩帶", and etc. It can ensure a higher rate of correct segmentation. That's why I chose Jieba to extract keywords.
+Since there are lots of new words in our task, this makes segmentation or tokenization harder. But Jieba has the ability to add your own new words. For example, I self-defined "手機殼", "維多利亞的秘密", "細肩帶", and etc. It can ensure a higher rate of correct segmentation. That's why I chose Jieba to extract keywords.
 
 ### Predictive Modeling ([XGboost](https://github.com/dmlc/xgboost))
 Although Jieba did well on keywords extraction, it was done based-on TF-IDF weights, which may not be the words that our customers used to look for products. So I created two different gradient boosted tree models to predict ratio that users used the word to look for products, then averaged their predictions together for reducing variance.
@@ -62,6 +62,8 @@ Although Jieba did well on keywords extraction, it was done based-on TF-IDF weig
 To convert these probabilities into binary Yes/No scores of which words will be used to look for products by users, I feed them into a special F1 Score Maximization algorithm. Later on, I will talk about the details in my presentation.
 
 
+
+Please see my presentation for more details.
 
 Feature Engineering
 ===
@@ -84,20 +86,20 @@ Explain the feature with top importance:
 
 **Product Name x word features**
 - weights_given_product_name: the tf-idf weights of words extracted by Jieba given a product name
-- position_given_product_name: the position of extracted words givne a product name. For example, a product name, "蘋果手機大特賣", then the position of extracted words of "蘋果" is 1, the position of extracted words of "手機" is 2, and so on.
+- position_given_product_name: the position of extracted words given a product name. For example, a product name, "蘋果手機大特賣", then the position of words of "蘋果" is 1, the position of words of "手機" is 2, and so on.
 - len_extracted_words: the length of extracted words given a product name. Take the above example to interpret, the length of extracted words given "蘋果手機大特賣" is 3 since it has separately 3 extracted words: "頻果", "手機", and "大特賣".
 
 **Hot Search features**
-- log_count_in_hot_search: how many times the extracted words were used to look for product by users. Also, I performed log-transformation on this feature, because it's good to ML algorithm when features with large value, practically.
+- log_count_in_hot_search: how many times the extracted words were used to look for product by users. Especially, I performed log-transformation on this feature, because it's good to ML algorithm when features with large value, practically.
 
 **Semantic features**
 I built 250-dimensional semantic space using  [gensim](https://radimrehurek.com/gensim/models/word2vec.html), trained on [wiki corpus](https://dumps.wikimedia.org/zhwiki/20180101/).
 
-- dim1: 1-dimensional semantic vector of the extracted word.
-- dim2: 2-dimensional semantic vector of the extracted word.
+- dim_1: 1-dimensional semantic vector of the extracted word.
+- dim_2: 2-dimensional semantic vector of the extracted word.
 
 Note: 
-Here I need some preprocessing to wiki corpus for conversion between Traditional Chinese and Simplified Chinese with [OpenCC](https://github.com/BYVoid/OpenCC) and training word vector. However, to save time, I put pre-traiend model, called word2vec.model, in the directory [word2vec](https://github.com/liyunrui/Product_Keywords_Extraction/tree/master/word2vec).
+Here I need some preprocessing to wiki corpus for conversion between Traditional Chinese and Simplified Chinese with [OpenCC](https://github.com/BYVoid/OpenCC) firstly. Secondly train word vector. However, to save time, I put pre-traiend model, called word2vec.model, in the directory [word2vec](https://github.com/liyunrui/Product_Keywords_Extraction/tree/master/word2vec).
 
 
 Experiments
